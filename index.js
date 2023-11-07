@@ -49,6 +49,11 @@ app.get('/createdassignments',async(req,res)=>{
     res.send(result)
 })
 
+app.get('/createdassignments/:id',async(req,res)=>{
+  
+} )
+
+
 app.post('/createdassignments',async(req,res)=>{
     const assignment= req.body
     console.log(assignment);
