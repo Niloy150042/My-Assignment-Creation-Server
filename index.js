@@ -3,7 +3,7 @@ const cors = require('cors');
 const app =express();
 const port = process.env.PORT|| 5000;
 require ('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
 
 // middleware using
 
@@ -30,17 +30,40 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
 
+const assignmentcollection = client.db('assignment').collection('assignments')
+
+app.get('/createdassignments',async(req,res)=>{
+    const cursor = assignmentcollection.find()
+    const result = await cursor . toArray()
+    res.send(result)
+})
+
+app.post('/createdassignments',async(req,res)=>{
+    const assignment= req.body
+    console.log(assignment);
+    const result = await assignmentcollection.insertOne(assignment)
+    res.send(result)
+})
+
+app.delete('/createdassignments/:id',async(req,res)=>{
+
+  const id=req.params.id;
+  const query = {_id : new ObjectId(id)}
+  const result = await assignmentcollection.deleteOne(query)
+  res.send(result)
+
+})
 
   
 
