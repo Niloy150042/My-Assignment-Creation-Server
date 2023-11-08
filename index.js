@@ -43,19 +43,54 @@ run().catch(console.dir);
 
 const assignmentcollection = client.db('assignment').collection('assignments')
 
+const Allassignmentcollection = client.db('assignment').collection('allassignment')
+
 app.get('/createdassignments',async(req,res)=>{
     const cursor = assignmentcollection.find()
     const result = await cursor . toArray()
     res.send(result)
 })
 
-app.get('/createdassignments/:id',async(req,res)=>{
+app.get('/allassignment',async(req,res)=>{
+  const cursor = Allassignmentcollection.find()
+  const result = await cursor . toArray()
+  res.send(result)
+})
+
+
+app.get('/allassignment/:id',async(req,res)=>{
    const id =req.params.id;
    const query = {_id : new ObjectId(id)}
-   const result = await assignmentcollection.findOne(query)
+   const result = await Allassignmentcollection.findOne(query)
    res.send (result)
 } )
 
+app.put('/allassignment/:id',async(req,res)=>{
+  const id = req.params.id;
+  const filter ={_id :new ObjectId(id) }
+  const options = {upsert:true}
+  const updatedassignment =req.body
+  const assignment = {  
+    
+   $set: {
+
+    title :updatedassignment.title ,
+    description :updatedassignment.description ,
+     marks :updatedassignment.marks ,
+      image :updatedassignment.image , difficulty:updatedassignment.difficulty ,
+       date:updatedassignment.date ,
+       User:updatedassignment.User
+
+   } }
+
+
+   
+
+ const result = await assignmentcollection.updateOne(filter,assignment,options)
+ res.send(result)
+  
+
+})
 
 app.post('/createdassignments',async(req,res)=>{
     const assignment= req.body
