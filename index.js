@@ -96,7 +96,7 @@ app.post('/createdassignments',async(req,res)=>{
     const assignment= req.body
     console.log(assignment);
     const result = await assignmentcollection.insertOne(assignment)
-    res.send(result)
+    // res.send(result)
 })
 
 app.delete('/createdassignments/:id',async(req,res)=>{
