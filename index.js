@@ -62,7 +62,7 @@ app.get('/allassignment/:id',async(req,res)=>{
    const id =req.params.id;
    const query = {_id : new ObjectId(id)}
    const result = await Allassignmentcollection.findOne(query)
-   res.send (result)
+  //  res.send (result)
 } )
 
 app.put('/allassignment/:id',async(req,res)=>{
